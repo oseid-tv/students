@@ -6,13 +6,15 @@ describe('Updating records', () => {
   let jason2;
 
   beforeEach((done) => {
-    jason = new Student({ name: 'Jason', studentNumber: 2500 });
-    jason2 = new Student({ name: 'Jason', studentNumber: 3500 });
-    jason2.save();
+    jason = new Student({
+      name: 'Jason',
+      studentNumber: 2500,
+      articleCount: 5,
+      grade: 10,
+    });
     jason.save().then(() => done());
 
     console.log(jason);
-    console.log(jason2);
   });
 
   //   it('set and save', (done) => {
@@ -37,13 +39,24 @@ describe('Updating records', () => {
   //     console.log(res);
   //   });
 
-  it('update Jasons', async () => {
-    const student = await Student.updateMany({
-      name: 'Jason',
-      studentNumber: 3000,
-    });
-    const res = await Student.find({});
-    assert(res[0].studentNumber === 3000 && res[0].studentNumber === 3000);
+  // it('update Jasons', async () => {
+  //   const student = await Student.updateMany({
+  //     name: 'Jason',
+  //     studentNumber: 3000,
+  //   });
+  //   const res = await Student.find({});
+  //   assert(res[0].studentNumber === 3000 && res[0].studentNumber === 3000);
+  //   console.log(res);
+  // });
+
+  it('Update grades', async () => {
+    const artCount = await Student.findOne({ name: 'Jason' });
+    const student = await Student.updateOne(
+      { name: 'Jason' },
+      { $mul: { grade: artCount.articleCount } }
+    );
+    const res = await Student.find({ name: 'Jason' });
+    assert(res[0].grade === 50);
     console.log(res);
   });
 });
