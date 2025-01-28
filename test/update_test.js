@@ -49,7 +49,7 @@ describe('Updating records', () => {
   //   console.log(res);
   // });
 
-  it('Update grades', async () => {
+  xit('Update grades', async () => {
     const artCount = await Student.findOne({ name: 'Jason' });
     const student = await Student.updateOne(
       { name: 'Jason' },

@@ -30,4 +30,23 @@ describe('Subdocument', () => {
         done();
       });
   });
+
+  it('Remove the records', (done) => {
+    const jason = new Student({
+      name: 'Jason',
+      articles: [{ title: 'React Native' }],
+    });
+    jason
+      .save()
+      .then(() => Student.findOne({ name: 'Jason' }))
+      .then((student) => {
+        student.articles[0].remove();
+        return student.save();
+      })
+      .then(() => Student.findOne({ name: 'Jason' }))
+      .then((student) => {
+        assert(student.articles.length === 0);
+        done();
+      });
+  });
 });
