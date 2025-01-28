@@ -14,4 +14,20 @@ describe('Subdocument', () => {
       });
     });
   });
+
+  it('Adding new record', (done) => {
+    const jason = new Student({ name: 'Jason', articles: [] });
+    jason
+      .save()
+      .then(() => Student.findOne({ name: 'Jason' }))
+      .then((student) => {
+        student.articles.push({ title: 'MongoDB' });
+        return student.save();
+      })
+      .then(() => Student.findOne({ name: 'Jason' }))
+      .then((student) => {
+        assert(student.articles[0].title === 'MongoDB');
+        done();
+      });
+  });
 });
